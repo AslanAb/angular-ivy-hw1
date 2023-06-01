@@ -24,8 +24,10 @@ export class AppComponent {
 
     this.button2Click$
       .pipe(
-        take(5),
-        map((value) => value * 10)
+        skip(2),
+        map((value) => value * 10),
+        filter((value) => value > 20),
+        filter((value) => value < 60)
       )
       .subscribe((value) => this.log.push(value.toString()));
   }
