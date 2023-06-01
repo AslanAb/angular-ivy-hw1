@@ -1,5 +1,5 @@
 import { Component, VERSION } from '@angular/core';
-import { map, skip, take, filter, delay, Subject } from 'rxjs';
+import { map, skip, take, filter, delay, Subject, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'my-app',
@@ -10,7 +10,7 @@ import { map, skip, take, filter, delay, Subject } from 'rxjs';
 // Look at read.me
 export class AppComponent {
   public log: string[] = [];
-  private _btn2Counter = 0;
+  private _btn2Counter = 1;
   public button1Click$: Subject<string> = new Subject<string>();
   public button2Click$: Subject<number> = new Subject<number>();
 
@@ -23,12 +23,7 @@ export class AppComponent {
       .subscribe((value) => this.log.push(value.toString()));
 
     this.button2Click$
-      .pipe(
-        skip(2),
-        map((value) => value * 10),
-        filter((value) => value > 20),
-        filter((value) => value < 60)
-      )
+      .pipe(debounceTime(2000))
       .subscribe((value) => this.log.push(value.toString()));
   }
 
